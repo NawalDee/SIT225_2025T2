@@ -1,0 +1,62 @@
+import sqlite3
+import pandas as pd
+import matplotlib.pyplot as plt
+
+conn = sqlite3.connect("gyroData2.db")
+df = pd.read_sql_query("SELECT * FROM gyroData2", conn)
+
+df.dropna(inplace=True)
+df["x"] = pd.to_numeric(df["x"], errors="coerce")
+df["y"] = pd.to_numeric(df["y"], errors="coerce")
+df["z"] = pd.to_numeric(df["z"], errors="coerce")
+df.dropna(inplace=True)
+
+df.to_csv("gyroData2_clean.csv", index=False)
+
+plt.style.use("ggplot")
+
+plt.figure()
+plt.plot(df["timestamp"], df["x"], 'r-', label="Gyro X")
+plt.xlabel("Time")
+plt.ylabel("Rotation (dps)")
+plt.title("Gyroscope X")
+plt.legend()
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig("gyro2_x.png")
+plt.close()
+
+plt.figure()
+plt.plot(df["timestamp"], df["y"], 'g-', label="Gyro Y")
+plt.xlabel("Time")
+plt.ylabel("Rotation (dps)")
+plt.title("Gyroscope Y")
+plt.legend()
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig("gyro2_y.png")
+plt.close()
+
+plt.figure()
+plt.plot(df["timestamp"], df["z"], 'b-', label="Gyro Z")
+plt.xlabel("Time")
+plt.ylabel("Rotation (dps)")
+plt.title("Gyroscope Z")
+plt.legend()
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig("gyro2_z.png")
+plt.close()
+
+plt.figure()
+plt.plot(df["timestamp"], df["x"], 'r-', label="Gyro X")
+plt.plot(df["timestamp"], df["y"], 'g-', label="Gyro Y")
+plt.plot(df["timestamp"], df["z"], 'b-', label="Gyro Z")
+plt.xlabel("Time")
+plt.ylabel("Rotation (dps)")
+plt.title("Gyroscope X, Y, Z Combined")
+plt.legend()
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig("gyro2_xyz.png")
+plt.close()
